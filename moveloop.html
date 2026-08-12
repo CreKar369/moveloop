@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#d76d42" />
+  <title>MoveLoop — Dance Challenge</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&display=swap');
+    :root{--ink:#32180f;--acid:#ffb447;--pink:#e96547;--blue:#4caaa0;--paper:#f5d69e;--muted:#875e48;--line:#c88c58}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:radial-gradient(circle at 80% 10%,#fff5c8 0,transparent 32%),linear-gradient(155deg,#f8e3b5,#e9ac70);color:var(--ink);font-family:Manrope,system-ui,sans-serif;min-height:100vh}
+    button{font:inherit;color:inherit} .shell{max-width:1280px;margin:auto;padding:20px 28px 36px}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:8px 0 20px;border-bottom:1px solid var(--line)}
+    .brand{font-size:22px;font-weight:800;letter-spacing:-1px}.brand i{display:inline-block;width:13px;height:13px;border-radius:50%;background:var(--pink);margin:0 2px;box-shadow:9px -7px 0 var(--blue)}
+    .nav-meta{display:flex;gap:24px;align-items:center;font:500 12px DM Mono,monospace;text-transform:uppercase;letter-spacing:.06em}.status:before{content:"";display:inline-block;width:7px;height:7px;background:#60d15f;border-radius:50%;margin-right:8px}
+    .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:end;padding:68px 0 46px}
+    .eyebrow{font:500 12px DM Mono,monospace;text-transform:uppercase;letter-spacing:.1em;margin-bottom:22px}.eyebrow span{background:#fff1ce;padding:7px 10px;border-radius:12px;box-shadow:0 4px 14px #7a2d1920}
+    h1{font-size:clamp(54px,8vw,112px);line-height:.86;letter-spacing:-.075em;margin:0;max-width:760px}h1 em{font-style:normal;color:var(--pink)}
+    .intro{font-size:18px;line-height:1.55;max-width:520px;margin:28px 0 30px;color:#44463f}
+    .actions{display:flex;gap:12px;flex-wrap:wrap}.btn{border:1px solid var(--ink);background:#fff4d7aa;border-radius:999px;padding:14px 22px;font-weight:800;cursor:pointer;transition:.18s transform,.18s box-shadow}.btn:hover{transform:translateY(-2px)}.btn.primary{background:var(--ink);color:white;box-shadow:5px 5px 0 var(--pink)}
+    .game-card{background:#2d100b;color:white;border-radius:28px;min-height:480px;padding:22px;position:relative;overflow:hidden;box-shadow:16px 16px 0 #b96743}
+    .card-top{display:flex;justify-content:space-between;align-items:center;font:12px DM Mono,monospace;text-transform:uppercase;position:relative;z-index:2}.pill{border:1px solid #ffffff55;border-radius:999px;padding:7px 10px}.score{font-size:18px}
+    .stage{height:330px;position:relative;display:flex;align-items:center;justify-content:center;margin-top:12px;border-radius:18px;overflow:hidden;background:#7a2f20}.stage-art{position:absolute;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.92) contrast(1.04)}.stage:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#30100a30,transparent 50%,#30100aa8)}
+    .move-label{text-align:center;position:relative;z-index:2}.move-label strong{display:block;font-size:30px;letter-spacing:-1px}.move-label small{font:12px DM Mono,monospace;color:#bbb}
+    @keyframes dance{to{transform:rotate(1.5deg) translateY(-5px) scale(1.02)}}
+    .mode-strip{border-top:1px solid var(--line);padding:25px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.mode{display:flex;gap:14px;align-items:center}.num{width:42px;height:42px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center;font:12px DM Mono}.mode strong{display:block}.mode small{color:var(--muted)}
+    dialog{border:1px solid #e9b777;padding:0;border-radius:26px;background:#2b110c;color:white;width:min(92vw,760px);box-shadow:0 24px 90px #31100899}dialog::backdrop{background:#2d150dc9;backdrop-filter:blur(8px)}
+    .game{padding:22px}.game-head{display:flex;align-items:center;justify-content:space-between}.game-head button{border:0;background:#ffffff1a;color:white;border-radius:50%;width:40px;height:40px;cursor:pointer;font-size:19px}.progress{height:5px;background:#333;border-radius:5px;margin:20px 0;overflow:hidden}.progress i{height:100%;width:0;display:block;background:var(--acid);transition:width .2s}
+    .play-zone{height:360px;border-radius:18px;background:#6a2b1d;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden}.play-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:.25s transform;animation:dance .7s ease-in-out infinite alternate}.play-zone:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#240d0755,transparent 35%,#240d07d9 92%)}
+    .prompt{z-index:2;align-self:end;margin-bottom:18px;text-shadow:0 2px 8px #000}.prompt h2{font-size:42px;margin:8px 0 0}.prompt p{color:#ffe6c2;margin:5px}.feedback{position:absolute;z-index:4;font-size:36px;font-weight:800;color:var(--acid);opacity:0;transform:scale(.6);transition:.18s;text-shadow:0 3px 10px #42180e}.feedback.show{opacity:1;transform:scale(1)}
+    .controls{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.move-btn{border:1px solid #444;background:#21221f;color:white;border-radius:13px;padding:13px 8px;cursor:pointer;font-weight:700}.move-btn:hover,.move-btn:active{background:var(--acid);color:var(--ink);transform:translateY(-2px)}
+    .result{text-align:center;padding:54px 20px}.result .big{font-size:80px;font-weight:800;letter-spacing:-5px;color:var(--acid)}.result h2{font-size:36px;margin:0}.hidden{display:none!important}
+    @media(max-width:800px){.shell{padding:14px 18px}.nav-meta span:first-child{display:none}.hero{grid-template-columns:1fr;gap:40px;padding:48px 0}.game-card{min-height:430px;box-shadow:8px 8px 0 var(--blue)}.stage{height:280px}.mode-strip{grid-template-columns:1fr;padding-top:32px}.mode{border-bottom:1px solid var(--line);padding-bottom:16px}.play-zone{height:330px}.controls{grid-template-columns:repeat(2,1fr)}h1{font-size:64px}}
+    @media(max-width:420px){h1{font-size:54px}.intro{font-size:16px}.game-card{padding:16px}.play-zone{height:300px}.prompt h2{font-size:32px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <nav><div class="brand">move<i></i>loop</div><div class="nav-meta"><span>Browser dance club</span><span class="status">Ready to move</span></div></nav>
+    <section class="hero">
+      <div><div class="eyebrow"><span>✦ daily challenge 08.12</span></div><h1>Catch the beat.<br><em>Own the loop.</em></h1><p class="intro">Copy the move, hit it on beat, and build your streak. No console. No download. Just you, a browser, and a little main-character energy.</p><div class="actions"><button class="btn primary" id="start">Start dancing →</button><button class="btn" id="how">How to play</button></div></div>
+      <div class="game-card"><div class="card-top"><span class="pill">Demo loop · 00:15</span><span class="score">1,240 pts</span></div><div class="stage"><img class="stage-art" src="dance-character-art.png" alt="Animated dancer performing in a warmly lit hall"></div><div class="move-label"><strong>Side Swipe</strong><small>← FOLLOW THE RHYTHM →</small></div></div>
+    </section>
+    <section class="mode-strip"><div class="mode"><span class="num">01</span><div><strong>Watch the move</strong><small>Learn a quick dance cue</small></div></div><div class="mode"><span class="num">02</span><div><strong>Match the beat</strong><small>Tap or use your keyboard</small></div></div><div class="mode"><span class="num">03</span><div><strong>Build your streak</strong><small>Perfect timing earns more</small></div></div></section>
+  </main>
+  <dialog id="gameDialog">
+    <div class="game" id="gamePanel"><div class="game-head"><div><strong>DAILY LOOP</strong><div style="color:#d5aa85;font:12px DM Mono">15 SECOND CHALLENGE</div></div><button id="close" aria-label="Close">×</button></div><div class="progress"><i id="bar"></i></div><div class="play-zone"><img class="play-art" id="playArt" src="dance-character-art.png" alt="Cartoon dance character"><div class="feedback" id="feedback">PERFECT!</div><div class="prompt"><h2 id="move">Side Swipe</h2><p>Hit the matching move on the beat</p></div></div><div class="controls"><button class="move-btn" data-move="Side Swipe">← Side Swipe</button><button class="move-btn" data-move="Hands Up">↑ Hands Up</button><button class="move-btn" data-move="Drop Low">↓ Drop Low</button><button class="move-btn" data-move="Spin">⟳ Spin</button></div><p style="text-align:center;color:#c99b78;font:11px DM Mono;margin:12px 0 0">KEYS: ← ↑ ↓ SPACE</p></div>
+    <div class="result hidden" id="result"><div style="font:12px DM Mono;color:#aaa">LOOP COMPLETE</div><div class="big" id="finalScore">0</div><h2>Nice moves!</h2><p id="resultText" style="color:#aaa">You found the rhythm.</p><button class="btn" style="color:white;border-color:white;margin-top:18px" id="again">Dance again</button></div>
+  </dialog>
+  <script>
+    const dialog=document.querySelector('#gameDialog'),panel=document.querySelector('#gamePanel'),result=document.querySelector('#result'),bar=document.querySelector('#bar'),moveEl=document.querySelector('#move'),playArt=document.querySelector('#playArt'),feedback=document.querySelector('#feedback');
+    const moves=[['Side Swipe','translateX(-1%) rotate(-1deg)'],['Hands Up','translateY(-2%) scale(1.04)'],['Drop Low','translateY(3%) scale(1.06)'],['Spin','scaleX(-1)']]; let score=0,step=0,timer,tick;
+    function begin(){score=0;step=0;panel.classList.remove('hidden');result.classList.add('hidden');dialog.showModal();next();clearInterval(tick);tick=setInterval(()=>{step++;bar.style.width=Math.min(step/12*100,100)+'%';if(step>=12)finish();else next()},1250)}
+    function next(){const m=moves[Math.floor(Math.random()*moves.length)];moveEl.textContent=m[0];playArt.style.transform=m[1]}
+    function hit(name){if(panel.classList.contains('hidden'))return;const ok=name===moveEl.textContent;score+=ok?100:20;feedback.textContent=ok?'PERFECT!':'KEEP MOVING!';feedback.style.color=ok?'var(--acid)':'var(--pink)';feedback.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>feedback.classList.remove('show'),330);if(navigator.vibrate)navigator.vibrate(ok?35:12)}
+    function finish(){clearInterval(tick);panel.classList.add('hidden');result.classList.remove('hidden');document.querySelector('#finalScore').textContent=score.toLocaleString();document.querySelector('#resultText').textContent=score>800?'You owned that loop. Superstar energy.':score>450?'Strong groove — one more round?':'Warm-up complete. Now chase the beat!'}
+    document.querySelector('#start').onclick=begin;document.querySelector('#close').onclick=()=>{clearInterval(tick);dialog.close()};document.querySelector('#again').onclick=begin;document.querySelector('#how').onclick=()=>document.querySelector('.mode-strip').scrollIntoView({behavior:'smooth'});document.querySelectorAll('.move-btn').forEach(b=>b.onclick=()=>hit(b.dataset.move));
+    addEventListener('keydown',e=>{const map={ArrowLeft:'Side Swipe',ArrowUp:'Hands Up',ArrowDown:'Drop Low',' ':'Spin'};if(map[e.key]){e.preventDefault();hit(map[e.key])}});
+    dialog.addEventListener('cancel',()=>clearInterval(tick));
+  </script>
+</body>
+</html>
